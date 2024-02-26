@@ -8,6 +8,7 @@ export class GameEnv {
     // game attributes
     static gameSpeed = 2;
     static gravity = 3;
+    static frameRate = 60;
     static innerWidth;
     static prevInnerWidth;
     static innerHeight;
@@ -23,9 +24,8 @@ export class GameEnv {
     // canvas filter property
     static isInverted = true;
 
-    // timer properties
-    static time = 0; // Initialize time variable
-    static timerInterval; // Variable to hold the interval reference
+    //background speeds
+    static backgroundSpeed = 0;
 
     // Make the constructor private to prevent instantiation
     constructor() {
@@ -111,7 +111,6 @@ export class GameEnv {
         }
         this.isInverted = !this.isInverted;  // switch boolean value
     }
-
 }
 
 export default GameEnv;

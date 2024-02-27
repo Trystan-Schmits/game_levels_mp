@@ -28,8 +28,16 @@ image: /images/mario_animation.png
   #mario {
     background-position: calc({{animations[0].col}} * {{pixels}} * -1px) calc({{animations[0].row}} * {{pixels}}* -1px);
   }
+  .button {
+    height: 50%;
+    width: 50%;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+  }
 </style>
-
+<body>
+<a href="{{site.baseurl}}/navigation/csse" class="button">CSSE</a>
 <!--- Embedded executable code--->
 <script>
   ////////// convert yml hash to javascript key value objects /////////
@@ -202,5 +210,8 @@ image: /images/mario_animation.png
     const scale = window.devicePixelRatio;
     const sprite = document.querySelector(".sprite");
     sprite.style.transform = `scale(${2*scale})`;
+    sprite.style.zIndex = "2";
     mario.startResting();
   });
+</script>
+</body>

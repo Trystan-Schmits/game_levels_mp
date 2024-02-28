@@ -89,7 +89,6 @@
                         this.isDying = true;
                         setTimeout(async() => {
                             await GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
-                            console.log("level restart")
                             this.isDying = false;
                         }, 900); 
                     }

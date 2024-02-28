@@ -196,6 +196,20 @@
         super.destroy();
     }
 
+    death(){
+        this.canvas.style.transition = "transform 0.5s";
+        this.canvas.style.transform = "rotate(-90deg) translate(-26px, 0%)";
+        playSound.playPlayerDeath();
+
+        if (this.isDying == false) {
+            this.isDying = true;
+            setTimeout(async() => {
+            await GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
+            console.log("level restart")
+            this.isDying = false;
+            }, 900); 
+        }
+    }
     /**
      * gameloop: performs action on collisions
      * Handles the player's actions when a collision occurs.
@@ -217,6 +231,10 @@
         else {
             this.movement.down = true;          
             this.gravityEnabled = true;
+        }
+
+        if (this.collisionData.touchPoints.other.id.includes("rocket")) {
+            
         }
     }
 

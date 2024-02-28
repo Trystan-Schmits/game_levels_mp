@@ -19,6 +19,7 @@ import Mushroom from './Mushroom.js';
 import Coin from './Coin.js';
 import Player2 from './Player2.js';
 import Dog from './Dog.js';
+import Rocket from './Rocket.js';
 
 /* Coding Style Notes
  *
@@ -262,10 +263,17 @@ const GameSetup = {
           scaleSize: 60,
           speedRatio: 0.7,
         },
+        rocket: {
+          src: "/images/platformer/sprites/rocket.png",
+          width: 100,
+          height: 50,
+          scaleSize: 60,
+          speedRatio: 0.7,
+        },
         dog: {
           src: "/images/platformer/sprites/dogSprites.png",
           width: 160,
-          height: 144,
+          height: 85,
           scaleSize: 400,
           speedRatio: 0.7,
         },
@@ -441,7 +449,23 @@ const GameSetup = {
           { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.8 },
           { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.7 },
           { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.6 },
-          { name: 'dog', id: 'dog', class: Dog, data: this.assets.enemies.dog, xPercentage:  0.75, minPosition: 0 },
+          { name: 'dog', id: 'dog', class: Dog, data: this.assets.enemies.dog, xPercentage:  0.5, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket1', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket2', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket3', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket4', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket5', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket6', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket7', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket8', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket9', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket10', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket11', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket12', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket13', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket14', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket15', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'rocket', id: 'rocket16', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5},
           { name: 'player', id: 'player', class: Player2, data: this.assets.players.monkey },
           { name: 'complete', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete },
         ];

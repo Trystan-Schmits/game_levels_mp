@@ -38,45 +38,44 @@ export class Dog extends GameObject {
 
         this.name = "dog"
 
-        //Define Speed of Enemy
-        if (["easy", "normal"].includes(GameEnv.difficulty)) {
-            this.speed = this.speed * Math.floor(Math.random() * 1.5 + 2);
-        } else if (GameEnv.difficulty === "hard") {
-            this.speed = this.speed * Math.floor(Math.random() * 3 + 3);
-        } else {
-            this.speed = this.speed * 5
-        }
-
-        var animationData = {size:[this.data.width,this.data.height],bark:{row:2,maxFrames:48,frameRate:24}};
+        var animationData = {size:[this.data.width,this.data.height],walk:{row:2,maxFrames:48,frameRate:24},bark:{row:1,maxFrames:48,frameRate:24}};
         this.Animation = new Animation(this.canvas,this.image,animationData)
-        this.Animation.changeAnimation("bark")
+        this.Animation.changeAnimation("walk");
+
+        this.isMoving = true;
     }
 
     update() {
-        super.update();
         
-        // Check for boundaries
-        if (this.x <= this.minPosition || (this.x + this.canvasWidth >= this.maxPosition)) {
-            this.speed = -this.speed;
-        };
+        if (this.isMoving){
+            // Check for boundaries
+            if (this.x <= this.minPosition || (this.x + this.canvasWidth >= this.maxPosition)) {
+                this.speed = -this.speed;
+            };
 
-        // Every so often change direction
-        switch(GameEnv.difficulty) {
-            case "normal":
-                if (Math.random() < 0.005) this.speed = -this.speed;
-                break;
-            case "hard":
-                if (Math.random() < 0.01) this.speed = -this.speed;
-                break;
-            case "impossible":
-                if (Math.random() < 0.02) this.speed = -this.speed;
-                break;
+            // Move the enemy
+            this.x -= this.speed;
+
+            this.playerBottomCollision = false;
+            if (this.bottom > this.y && this.gravityEnabled){
+                this.y += GameEnv.gravity;
+            }
+            if(Math.floor(Math.random()*500)==1){ //begin bark attack
+                this.isMoving = false;
+                this.Animation.changeAnimation("bark");
+                for (let i = 1;i<17;i++){
+                    console.log("rocket"+String(i))
+                    setTimeout(function(){
+                        window.dispatchEvent(new CustomEvent("fireRocket",{detail:{rocket:"rocket"+String(i)}}))
+                    },500*i)
+                }
+                setTimeout(function(){
+                    this.Animation.changeAnimation("walk");
+                    this.isMoving = true;
+                }.bind(this),8000)
+            }
         }
-
-        // Move the enemy
-        this.x -= this.speed;
-
-        this.playerBottomCollision = false;
+        this.collisionChecks();
     }
     
     size() {
@@ -104,21 +103,8 @@ export class Dog extends GameObject {
             this.setY(this.bottom);
         }
     }
-
     // Player action on collisions
     collisionAction() {
-        if (this.collisionData.touchPoints.other.id === "jumpPlatform") {
-            if (this.collisionData.touchPoints.other.left || this.collisionData.touchPoints.other.right) {
-                this.speed = -this.speed;            
-            }
-        }
-    }
-
-    update() {
-        if (this.bottom > this.y && this.gravityEnabled){
-            this.y += GameEnv.gravity;
-        }
-        this.collisionChecks();
     }
 
     draw(){

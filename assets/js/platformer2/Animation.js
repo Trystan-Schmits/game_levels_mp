@@ -9,7 +9,7 @@ class Animation{
         this.frameRate = 60;
         this.SpriteSize = animationData.size;
         this.animationFrameId = "";
-        this.stop = false;
+        this.animationNumber = 0;
     }
 
     drawFrame(){
@@ -23,11 +23,11 @@ class Animation{
         this.drawFrame();
     }
 
-    runAnimation(){
+    runAnimation(number){
         setTimeout(function(){
                 this.animationFrameId = window.requestAnimationFrame(this.updateFrame.bind(this));
-                if(this.stop == false){
-                    this.runAnimation();
+                if(this.animationNumber == number){
+                    this.runAnimation(number);
                 }
         }.bind(this),1000/this.frameRate)
     }
@@ -35,17 +35,16 @@ class Animation{
     stopAnimation(){
         window.cancelAnimationFrame(this.animationFrameId);
         this.animationFrameId = "";
-        this.stop = true;
+        this.animationNumber += 1;
     }
 
     changeAnimation(key){
-        if(this.animationFrameId != ""){this.stopAnimation()};
-        this.stop = false;
+        this.stopAnimation();
         this.frame = 0;
         this.row = this.animationData[key].row;
         this.maxFrames = this.animationData[key].maxFrames;
         this.frameRate = this.animationData[key].frameRate;
-        this.runAnimation();
+        this.runAnimation(this.animationNumber.valueOf());
     }
 }
 export default Animation;

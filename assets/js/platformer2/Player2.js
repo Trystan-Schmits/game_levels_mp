@@ -1,6 +1,7 @@
     import GameEnv from './GameEnv.js';
     import Character from './Character.js';
     import playSound from './Audio.js';
+    import GameControl from './GameControl.js';
 
     /**
      * @class Player class
@@ -47,6 +48,10 @@
             this.timer = false;
 
             this.name = GameEnv.userID;
+
+            window.addEventListener("death",function(){
+                this.death();
+            }.bind(this))
         }
 
         /**
@@ -234,7 +239,12 @@
         }
 
         if (this.collisionData.touchPoints.other.id.includes("rocket")) {
-            
+            this.death();
+        }
+
+        if (this.collisionData.touchPoints.other.id == "dog"){
+                window.dispatchEvent(new Event("dog"));
+                this.x = 0
         }
     }
 

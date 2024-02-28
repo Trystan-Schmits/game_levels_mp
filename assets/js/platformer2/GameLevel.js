@@ -118,7 +118,7 @@ class GameLevel {
         
         existingTimeScores.push(data);
         // Log the updated array to the console for debugging
-        console.log(existingTimeScores);
+        //console.log(existingTimeScores);
         // Save the updated array to local storage
         localStorage.setItem('GtimeScores', JSON.stringify(existingTimeScores));
     }

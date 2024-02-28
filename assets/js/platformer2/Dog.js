@@ -43,6 +43,29 @@ export class Dog extends GameObject {
         this.Animation.changeAnimation("walk");
 
         this.isMoving = true;
+
+        this.odds = 500; //higher # == lower odds
+        this.health = 3;
+        this.immune = false;
+
+        window.addEventListener("dog",function(){
+            console.log("fired")
+            if(this.immune == false){
+                this.health -=1;
+                this.immune = true;
+                this.odds = 50;
+                this.canvas.style.filter = "invert(100)";
+                setTimeout(
+                    function(){
+                        this.canvas.style.filter = "invert(0)";
+                        this.immune = false
+                        this.odds = 500;
+                    }.bind(this), 15000)
+            } 
+            else{
+                window.dispatchEvent(new Event("death"));
+            }
+        }.bind(this))
     }
 
     update() {
@@ -60,7 +83,7 @@ export class Dog extends GameObject {
             if (this.bottom > this.y && this.gravityEnabled){
                 this.y += GameEnv.gravity;
             }
-            if(Math.floor(Math.random()*500)==1){ //begin bark attack
+            if(Math.floor(Math.random()*this.odds)==1){ //begin bark attack
                 this.isMoving = false;
                 this.Animation.changeAnimation("bark");
                 for (let i = 1;i<17;i++){

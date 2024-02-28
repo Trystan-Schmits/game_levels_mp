@@ -6,6 +6,7 @@ class Rocket extends Character{
     constructor(canvas, image, data, xPercentage, yPercentage, name, minPosition){
         super(canvas, image, data, 0.0, 0.2);
 
+        this.name = "";
         this.gravityEnabled = false; //rocket, doesn't fall
 
         this.y = yPercentage;
@@ -42,7 +43,7 @@ class Rocket extends Character{
 
         // Every so often change direction
         switch(GameEnv.difficulty) {
-            case "normal":
+            /* case "normal":
                 if (Math.random() < 0.005) this.speed = -this.speed;
                 break;
             case "hard":
@@ -51,6 +52,7 @@ class Rocket extends Character{
             case "impossible":
                 if (Math.random() < 0.02) this.speed = -this.speed;
                 break;
+            */
         }
 
          //Chance for Goomba to turn Gold

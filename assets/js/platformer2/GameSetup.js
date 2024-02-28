@@ -17,7 +17,8 @@ import FlyingGoomba from './FlyingGoomba.js';
 import BlockPlatform from './BlockPlatform.js';
 import Mushroom from './Mushroom.js';
 import Coin from './Coin.js';
-
+import Player2 from './Player2.js';
+import Dog from './Dog.js';
 
 /* Coding Style Notes
  *
@@ -261,6 +262,13 @@ const GameSetup = {
           scaleSize: 60,
           speedRatio: 0.7,
         },
+        dog: {
+          src: "/images/platformer/sprites/dogSprites.png",
+          width: 160,
+          height: 144,
+          scaleSize: 400,
+          speedRatio: 0.7,
+        },
         mushroom: {
           src: "/images/platformer/platforms/mushroom.png",
           width: 200,
@@ -418,6 +426,27 @@ const GameSetup = {
         ];
         // Space Game Level added to the GameEnv ...
         new GameLevel( {tag: "space", callback: this.playerOffScreenCallBack, objects: spaceGameObjects} );
+
+        // Space Game Level definition...
+        const dogObjects = [
+          // GameObject(s), the order is important to z-index...
+          { name: 'space', id: 'background', class: Background, data: this.assets.backgrounds.space },
+          { name: 'grass', id: 'platform', class: Platform, data: this.assets.platforms.grass },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.2, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.2368, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.5, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.5368, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 1 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.9 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.8 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.7 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.6 },
+          { name: 'dog', id: 'dog', class: Dog, data: this.assets.enemies.dog, xPercentage:  0.75, minPosition: 0 },
+          { name: 'player', id: 'player', class: Player2, data: this.assets.players.monkey },
+          { name: 'complete', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete },
+        ];
+        // Space Game Level added to the GameEnv ...
+        new GameLevel( {tag: "dog", callback: this.playerOffScreenCallBack, objects: dogObjects} );
 
         // Game Over Level definition...
         const endGameObjects = [

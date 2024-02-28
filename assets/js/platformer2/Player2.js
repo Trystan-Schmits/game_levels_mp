@@ -1,6 +1,5 @@
     import GameEnv from './GameEnv.js';
     import Character from './Character.js';
-    import GameControl from './GameControl.js';
     import playSound from './Audio.js';
 
     /**
@@ -17,7 +16,7 @@
     /*
         created for boss fight, no goomba interaction, tree interaction, or pipe interaction
     */
-    export class Player extends Character {
+    export class Player2 extends Character {
         // instantiation: constructor sets up player object 
         constructor(canvas, image, data, widthPercentage = 0.3, heightPercentage = 0.8) {
             super(canvas, image, data, widthPercentage, heightPercentage);
@@ -80,28 +79,6 @@
             return result;
         }
 
-
-        goombaCollision() {
-            if (this.timer === false) {
-                this.timer = true;
-                if (GameEnv.difficulty === "normal" || GameEnv.difficulty === "hard") {
-                    this.canvas.style.transition = "transform 0.5s";
-                    this.canvas.style.transform = "rotate(-90deg) translate(-26px, 0%)";
-                    playSound.playPlayerDeath();
-
-                    if (this.isDying == false) {
-                        this.isDying = true;
-                        setTimeout(async() => {
-                            await GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
-                            console.log("level restart")
-                            this.isDying = false;
-                        }, 900); 
-                    }
-                } else if (GameEnv.difficulty === "easy") {
-                    this.x += 10;
-                }
-            }
-        }
         /**
          * This helper method that acts like an animation manager. Frames are set according to player events.
          *  - Sets the animation of the player based on the provided key.
@@ -144,12 +121,6 @@
             GameEnv.PlayerPosition.playerX = this.x;
             GameEnv.PlayerPosition.playerY = this.y;
 
-            // GoombaBounce deals with player.js and goomba.js
-            if (GameEnv.goombaBounce === true) {
-                GameEnv.goombaBounce = false;
-                this.y = this.y - 250;
-            }
-
             // Player moving right 
             if (this.isActiveAnimation("a")) {
                 if (this.movement.left) this.x -= this.isActiveAnimation("s") ? this.moveSpeed : this.speed;  // Move to left
@@ -191,17 +162,6 @@
                     this.y -= (this.bottom * .15);  // platform jump height
                 }
             }
-        
-
-            //Prevent Player from Dashing Through Tube
-            let tubeX = (.80 * GameEnv.innerWidth)
-            if (this.x >= tubeX && this.x <= GameEnv.innerWidth) {
-                this.x = tubeX - 1;
-
-                GameEnv.backgroundHillsSpeed = 0;
-                GameEnv.backgroundMountainsSpeed = 0;
-            }
-
             //Prevent Player from Leaving from Screen
             if (this.x < 0) {
                 this.x = 1;
@@ -209,21 +169,15 @@
                 GameEnv.backgroundHillsSpeed = 0;
                 GameEnv.backgroundMountainsSpeed = 0;
             }
+            if (this.x > GameEnv.innerWidth) {
+                this.x = GameEnv.innerWidth;
+
+                GameEnv.backgroundHillsSpeed = 0;
+                GameEnv.backgroundMountainsSpeed = 0;
+            }
 
             // Perform super update actions
             super.update();
-
-
-            // To put mario in the air after stepping on the goomba
-            if (GameEnv.goombaBoost === true) {
-                GameEnv.goombaBoost = false;
-                this.y = this.y - 150;
-            }
-
-            if (GameEnv.goombaBounce1 === true) {
-                GameEnv.goombaBounce1 = false; 
-                this.y = this.y - 250
-            } 
         }
 
 
@@ -253,18 +207,6 @@
     collisionAction() {
         // Block collision check
         if (this.collisionData.touchPoints.other.id === "jumpPlatform") {
-            if (this.collisionData.touchPoints.other.left) {
-                this.movement.right = false;
-                this.gravityEnabled = true;
-                this.y -= GameEnv.gravity; // allows movemnt on platform, but climbs walls
-                // this.x -= this.isActiveAnimation("s") ? this.moveSpeed : this.speed;  // Move to left
-            }
-            if (this.collisionData.touchPoints.other.right) {
-                this.movement.left = false;
-                this.gravityEnabled = true;
-                this.y -= GameEnv.gravity; // allows movemnt on platform, but climbs walls
-                // this.x += this.isActiveAnimation("s") ? this.moveSpeed : this.speed;  // Move to right
-            }
             if (this.collisionData.touchPoints.this.top) {
                 this.movement.down = false; // enable movement down without gravity
                 this.gravityEnabled = false;
@@ -310,6 +252,7 @@
             }
             // dash action on
             if (this.isKeyActionDash(key)) {
+                GameEnv.dash = true;
                 this.canvas.style.filter = 'invert(1)';
             }
             // parallax background speed starts on player movement
@@ -333,12 +276,6 @@
             this.isIdle = false;
             GameEnv.transitionHide = true;
         }
-        // dash action on
-        if (this.isKeyActionDash(key)) {
-            GameEnv.dash = true;
-            this.canvas.style.filter = 'invert(1)';
-        }
-        
     }
 
 
@@ -372,4 +309,4 @@
     }
 }
 
-    export default Player;
+    export default Player2;

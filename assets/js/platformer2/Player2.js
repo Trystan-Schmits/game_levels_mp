@@ -211,7 +211,6 @@
             setTimeout(async() => {
             await GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)]);
             console.log("level restart")
-            this.isDying = false;
             }, 900); 
         }
     }
@@ -239,6 +238,10 @@
         }
 
         if (this.collisionData.touchPoints.other.id.includes("rocket")) {
+            this.death();
+        }
+
+        if (this.collisionData.touchPoints.other.id.includes("disk")) {
             this.death();
         }
 

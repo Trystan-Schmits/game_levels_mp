@@ -1,6 +1,7 @@
 import GameObject from './GameObject.js';
 import GameEnv from './GameEnv.js';
 import Animation from './Animation.js';
+import GameControl from './GameControl.js';
 /*
     checklist:
     -giant dog as boss, gets larger with difficulty: _
@@ -43,6 +44,8 @@ export class Dog extends GameObject {
         this.Animation.changeAnimation("walk");
 
         this.isMoving = true;
+        this.isDying = false;
+        this.eventCount = 0;
 
         this.odds = 500; //higher # == lower odds
         this.health = 3;
@@ -50,32 +53,58 @@ export class Dog extends GameObject {
 
         window.addEventListener("dog",function(){
             console.log("fired")
-            if(this.immune == false){
+            if(this.immune==false){
                 this.health -=1;
+                if (this.health == 0){
+                    this.death();
+                }
+                else {
                 this.immune = true;
                 this.odds = 50;
                 this.canvas.style.filter = "invert(100)";
-                setTimeout(
-                    function(){
-                        this.canvas.style.filter = "invert(0)";
-                        this.immune = false
-                        this.odds = 500;
-                    }.bind(this), 15000)
-            } 
+                setTimeout(function(){
+                    this.canvas.style.filter = "invert(0)";
+                    this.immune = false
+                    this.odds = 500;
+                }.bind(this), 15000)
+                }
+            }
+            else if (!this.immune){
+                return
+            }
             else{
                 window.dispatchEvent(new Event("death"));
             }
         }.bind(this))
     }
 
+    randomEvent(){
+        this.eventCount += 1;
+        var increment = 1;
+        if (GameEnv.difficulty === "easy") { increment = 3};
+        if (GameEnv.difficulty === "normal") { increment = 2};
+        switch (this.eventCount % 2){
+            case 0: 
+                for (let i = 1;i<17;i+= increment){
+                    setTimeout(function(){
+                        window.dispatchEvent(new CustomEvent("fireRocket",{detail:{rocket:"rocket"+String(i)}}))
+                    },500*i)
+                }
+            case 1:
+                for (let i = 1;i<9;i+= increment){
+                    setTimeout(function(){
+                        window.dispatchEvent(new CustomEvent("disk",{detail:{disk:"disk"+String(i)}}))
+                        setTimeout(function(){window.dispatchEvent(new CustomEvent("diskDir",{detail:{disk:"disk"+String(i)}}))},2000);
+                        setTimeout(function(){window.dispatchEvent(new CustomEvent("diskClear",{detail:{disk:"disk"+String(i)}}))},7000);
+                    },1000*i)
+                }
+            default:
+        }
+    }
+
     update() {
         
         if (this.isMoving){
-            // Check for boundaries
-            if (this.x <= this.minPosition || (this.x + this.canvasWidth >= this.maxPosition)) {
-                this.speed = -this.speed;
-            };
-
             // Move the enemy
             this.x -= this.speed;
 
@@ -86,21 +115,48 @@ export class Dog extends GameObject {
             if(Math.floor(Math.random()*this.odds)==1){ //begin bark attack
                 this.isMoving = false;
                 this.Animation.changeAnimation("bark");
-                for (let i = 1;i<17;i++){
-                    console.log("rocket"+String(i))
-                    setTimeout(function(){
-                        window.dispatchEvent(new CustomEvent("fireRocket",{detail:{rocket:"rocket"+String(i)}}))
-                    },500*i)
-                }
+                this.randomEvent();
                 setTimeout(function(){
                     this.Animation.changeAnimation("walk");
                     this.isMoving = true;
                 }.bind(this),8000)
             }
+            if (this.immune == false){
+                if(this.health == 2){
+                this.canvas.style.filter = "hue-rotate(45deg)"
+                }else if (this.health == 1){
+                this.canvas.style.filter = "hue-rotate(90deg) drop-shadow(0px 0px 20px green)"
+                }
+                // Check for boundaries
+                if (this.x <= this.minPosition || (this.x + this.canvasWidth >= this.maxPosition)) {
+                    this.speed = -this.speed;
+                };
+            }
         }
         this.collisionChecks();
     }
     
+    death(){
+        this.canvas.style.filter = "grayscale(100%)"
+        this.canvas.style.transition = "transform 2s";
+        this.canvas.style["transform-origin"] = "bottom center";
+        this.canvas.style.transform = "scaleY(0)";
+
+        if (this.isDying == false) {
+            this.isDying = true;
+            setTimeout(async() => {
+            await GameControl.transitionToLevel(GameEnv.levels[GameEnv.levels.indexOf(GameEnv.currentLevel)+1]);
+            },2000); 
+        }
+    }
+
+    destroy(){
+        super.destroy();
+        Object.keys(this).forEach(element => {
+            delete this[element];        
+        });
+    }
+
     size() {
         // set Canvas scale,  80 represents size of Character height when inner Height is 832px
         var scaledCharacterHeight = GameEnv.innerHeight * (this.scaleSize / 832);

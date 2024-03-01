@@ -20,6 +20,7 @@ import Coin from './Coin.js';
 import Player2 from './Player2.js';
 import Dog from './Dog.js';
 import Rocket from './Rocket.js';
+import Disk from './Disk.js';
 
 /* Coding Style Notes
  *
@@ -179,6 +180,7 @@ const GameSetup = {
         alien: { src: "/images/platformer/platforms/alien.png" },
         bricks: { src: "/images/platformer/platforms/brick_wall.png" },
         block: { src: "/images/platformer/platforms/brick_block.png" }, //MAY need 3 new variables: sizeRatio, widthRatio, and heightRatio
+        cloud: { src: "/images/platformer/platforms/cloud.png" },
         itemBlock: {
           src: "/images/platformer/platforms/mario_block_spritesheet_v2.png",
           sizeRatio: 83.2,
@@ -201,6 +203,7 @@ const GameSetup = {
         loading: { src: "/images/platformer/backgrounds/greenscreen.png" },
         complete: { src: "/images/platformer/backgrounds/OneStar.png" },
         complete2: { src: "/images/platformer/backgrounds/TwoStar.png" },
+        green: { src: "/images/platformer/backgrounds/greenPlanet.jpg" },
         end: { src: "/images/platformer/backgrounds/Congratulations!!!.png" }
       },
       players: {
@@ -267,8 +270,15 @@ const GameSetup = {
           src: "/images/platformer/sprites/rocket.png",
           width: 100,
           height: 50,
-          scaleSize: 60,
-          speedRatio: 0.7,
+          scaleSize: 40,
+          speedRatio: 2,
+        },
+        disk: {
+          src: "/images/platformer/sprites/disk.png",
+          width: 100,
+          height: 50,
+          scaleSize: 40,
+          speedRatio: 1.5,
         },
         dog: {
           src: "/images/platformer/sprites/dogSprites.png",
@@ -438,17 +448,16 @@ const GameSetup = {
         // Space Game Level definition...
         const dogObjects = [
           // GameObject(s), the order is important to z-index...
-          { name: 'space', id: 'background', class: Background, data: this.assets.backgrounds.space },
+          { name: 'green planet', id: 'background', class: Background, data: this.assets.backgrounds.green },
           { name: 'grass', id: 'platform', class: Platform, data: this.assets.platforms.grass },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.2, yPercentage: 0.85 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.2368, yPercentage: 0.85 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.5, yPercentage: 0.85 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.5368, yPercentage: 0.85 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 1 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.9 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.8 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.7 },
-          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.alien, xPercentage: 0.4, yPercentage: 0.6 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.cloud, xPercentage: 0.2, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.cloud, xPercentage: 0.2368, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.cloud, xPercentage: 0.5, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.cloud, xPercentage: 0.5368, yPercentage: 0.6 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.cloud, xPercentage: 0.3, yPercentage: 0.6 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.cloud, xPercentage: 0.5368, yPercentage: 0.85 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.cloud, xPercentage: 0.1, yPercentage: 0.7 },
+          { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.cloud, xPercentage: 0.5, yPercentage: 0.7 },
           { name: 'dog', id: 'dog', class: Dog, data: this.assets.enemies.dog, xPercentage:  0.5, minPosition: 0.5 },
           {name: 'rocket', id: 'rocket1', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
           {name: 'rocket', id: 'rocket2', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
@@ -466,6 +475,14 @@ const GameSetup = {
           {name: 'rocket', id: 'rocket14', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
           {name: 'rocket', id: 'rocket15', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5 },
           {name: 'rocket', id: 'rocket16', class: Rocket, data: this.assets.enemies.rocket, xPercentage:  0.7, minPosition: 0.5},
+          {name: 'disk', id: 'disk1', class: Disk, data: this.assets.enemies.disk, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'disk', id: 'disk2', class: Disk, data: this.assets.enemies.disk, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'disk', id: 'disk3', class: Disk, data: this.assets.enemies.disk, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'disk', id: 'disk4', class: Disk, data: this.assets.enemies.disk, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'disk', id: 'disk5', class: Disk, data: this.assets.enemies.disk, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'disk', id: 'disk6', class: Disk, data: this.assets.enemies.disk, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'disk', id: 'disk7', class: Disk, data: this.assets.enemies.disk, xPercentage:  0.7, minPosition: 0.5 },
+          {name: 'disk', id: 'disk8', class: Disk, data: this.assets.enemies.disk, xPercentage:  0.7, minPosition: 0.5 },
           { name: 'player', id: 'player', class: Player2, data: this.assets.players.monkey },
           { name: 'complete', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete },
         ];

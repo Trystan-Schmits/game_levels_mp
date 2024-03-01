@@ -1,7 +1,7 @@
 import GameEnv from "./GameEnv.js";
 import Character from "./Character.js";
 
-class Rocket extends Character{
+class Disk extends Character{
     // constructors sets up Character object 
     constructor(canvas, image, data, xPercentage, yPercentage, name, minPosition){
         super(canvas, image, data, 0.0, 0.2);
@@ -12,7 +12,7 @@ class Rocket extends Character{
         this.y = yPercentage;
 
         //Initial Position of Rocket
-        this.x = -1000; //offscreen
+        this.x = -100000; //offscreen
 
         //Access in which a Goomba can travel    
         this.minPosition = minPosition * GameEnv.innerWidth;
@@ -32,10 +32,22 @@ class Rocket extends Character{
 
         this.id = this.canvas.id;
 
-        window.addEventListener("fireRocket",function(e){
-            if (e.detail.rocket == this.id){
+        window.addEventListener("disk",function(e){
+            if (e.detail.disk == this.id){
                 this.x = xPercentage * GameEnv.innerWidth;
+                console.log("fired"+this.id,this.x)
                 this.y = GameEnv.innerHeight/2 + (Math.random() - .5)*GameEnv.innerHeight
+            }
+        }.bind(this))
+        window.addEventListener("diskDir",function(e){
+            if (e.detail.disk == this.id){
+                this.speed = -this.speed;
+            }
+        }.bind(this))
+        window.addEventListener("diskClear",function(e){
+            if (e.detail.disk == this.id){
+                this.x = -100000;
+                this.speed = -this.speed;
             }
         }.bind(this))
     }
@@ -83,4 +95,4 @@ class Rocket extends Character{
     collisionAction() {
     }
 }
-export default Rocket;
+export default Disk;

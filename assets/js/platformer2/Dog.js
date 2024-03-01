@@ -2,6 +2,7 @@ import GameObject from './GameObject.js';
 import GameEnv from './GameEnv.js';
 import Animation from './Animation.js';
 import GameControl from './GameControl.js';
+import createSound from './Sound.js';
 /*
     checklist:
     -giant dog as boss, gets larger with difficulty: _
@@ -76,6 +77,10 @@ export class Dog extends GameObject {
                 window.dispatchEvent(new Event("death"));
             }
         }.bind(this))
+
+        var backgroundSound = createSound("/game_levels_mp/audio/platformer/honor.mp3");
+        backgroundSound.loop = true;
+        backgroundSound.play();
     }
 
     randomEvent(){
